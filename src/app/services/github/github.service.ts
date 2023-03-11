@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient  } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
+import options from 'src/token';
 
 import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class GithubService {
   private username: string;
   private client_id = '5bb4e25b89af9bfedd26';
@@ -17,12 +19,12 @@ export class GithubService {
   }
 
   getUser(): Observable<any>  {
-    return this._http.get('https://api.github.com/users/' + this.username + '?client_id=' + this.client_id + '&client_secret=' + this.client_secret)
+    return this._http.get('https://api.github.com/users/' + this.username, options)
       .pipe(map(res => res));
   }
 
   getRepos(): Observable<any> {
-    return this._http.get<any[]>('https://api.github.com/users/' + this.username + '/repos' + '?client_id=' + this.client_id + '&client_secret=' + this.client_secret)
+    return this._http.get<any[]>('https://api.github.com/users/' + this.username + '/repos', options)
       .pipe(
         map(res => res.map(repo => ({
           name: repo.name,
